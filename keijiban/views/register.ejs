@@ -1,0 +1,18 @@
+<%- include('./top1') %>
+<form action="/users/register" method="post">
+    <p>username<br><input type="text" name="name" size="40" value="<%= name %>"></p>
+    <p>email<br><input type="text" name="email" size="40" value="<%= email %>"></p>
+    <p>password<br><input type="text" name="password" size="40" value="<%= password %>"></p>
+    <p>password confirm<br><input type="text" name="password_confirm" size="40" value="<%= password_confirm %>"></p>
+    <p><input type="submit" id="register" value="Register"></p>
+</form>
+<% if(errMessage) { %>
+    <ul>
+        <% for (let i in errMessage) { %>
+            <li>
+                <%= errMessage[i].msg %>
+            </li>
+            <% } %>
+    </ul>
+<% } %>
+<%- include('./bottom1') %>

@@ -1,0 +1,16 @@
+<%- include('./top1') %>
+<form action="/users/login" method="post">
+    <p>email<br><input type="text" name="email" size="40" value="<%= email %>"></p>
+    <p>password<br><input type="text" name="password" size="40" value="<%= password %>"></p>
+    <p><input type="submit" id="login" value="Login"></p>
+</form>
+<% if(errMessage) { %>
+    <ul>
+        <% for (let i in errMessage) { %>
+            <li>
+                <%= errMessage[i].msg %>
+            </li>
+            <% } %>
+    </ul>
+<% } %>
+<%- include('./bottom1') %>
