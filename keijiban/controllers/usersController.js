@@ -34,7 +34,7 @@ const usersController = {
         } else {
             const result = await users.create(req, res);
             if(result.token){
-                res.cookie('token', result.token, {httponly: false});
+                res.cookie('token', result.token, {maxAge: 3600,httpOnly: false});
                 res.redirect('/posts/viewPosts');
             }else{
                 const errArray = [];
@@ -61,7 +61,7 @@ const usersController = {
         } else {
             const result = await users.select(req, res);
             if(result.token){
-                res.cookie('token', result.token, {httponly: false});
+                res.cookie('token', result.token, {maxAge: 3600,httpOnly: false});
                 res.redirect('/posts/viewPosts');
             }else{
                 const errArray = [];

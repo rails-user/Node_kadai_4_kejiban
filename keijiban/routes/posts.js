@@ -5,11 +5,11 @@ const httpStatus = require('http-status-codes');
 //const cookie = require('cookie');
 
 router.get('/viewPosts', (req, res) => {
-    // if(req.headers.cookie){
+    if(req.headers.cookie){
         postsController.viewPosts(req, res);
-    // }else{
-    //     res.redirect('/users/viewLogin');
-    // }
+    }else{
+        res.redirect('/users/viewLogin');
+    }
 })
 router.get('/viewCreate', (req, res) => {
     if(req.headers.cookie){
