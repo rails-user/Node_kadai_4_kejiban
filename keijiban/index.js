@@ -6,6 +6,10 @@ app = express();
 //静的ファイル(JSファイル)の読み込み
 app.use(express.static('public'));
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 //ブランチがdevelopなのでポート番号は3000を設定する
 app.set('port', 3000);
 

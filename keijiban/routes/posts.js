@@ -4,13 +4,20 @@ const postsController = require('../controllers/postsController.js');
 const httpStatus = require('http-status-codes');
 const cookie = require('cookie');
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
 router.get('/viewPosts', (req, res) => {
-    if(req.headers.cookie || req.headers['Authorization']){
+    console.log('req.headers'+req.headers)
+    console.log('authorization'+req.headers['authorization']);
+    if(req.headers.cookie || req.headers['authorization']){
         postsController.viewPosts(req, res);
     }else{
         res.redirect('/users/viewLogin');
     }
-})  
+})
 router.get('/viewCreate', (req, res) => {
     const token =cookie.parse(req.headers.cookie).token;
     if(token){

@@ -49,14 +49,14 @@ document.getElementById('logout2').onclick = function() {
     localStorage.removeItem("name");
     //cookieの初期化
     document.cookie = 'token=; max-age=0';
-
 }
 document.getElementById('viewPosts').onclick = () => {
     //リクエストヘッダにtokenを格納
     const tokenArray = localStorage.getItem("token").split('=');
+    const token =  tokenArray[1]
     xhr.open("GET", "/viewPosts");
     xhr.withCredentials = true;
-    xhr.setRequestHeader('Authorization', 'Bearer ' + tokenArray[1])
+    xhr.setRequestHeader('Authorization', 'Bearer ' + token)
     xhr.send();
 }
 document.getElementById('viewCreate').onclick = () => {
