@@ -1,10 +1,11 @@
+var xhr = new XMLHttpRequest();
+
 document.addEventListener("DOMContentLoaded", (response) => {
-    
-    var xhr = new XMLHttpRequest();
+//初回ロード時のみローカルストレージにtokenおよびユーザー名を格納する
+if(!localStorage.getItem("token")){
     //名前を格納する変数
     let name = '';
     let token =  '';
-
     //cookie（複数）を取得
     const cookies = document.cookie;
     //cookie（複数）を区切り文字;で分割して配列に格納する
@@ -33,31 +34,32 @@ document.addEventListener("DOMContentLoaded", (response) => {
             break;
         }
     }
-    //cookieの初期化
-    document.cookie = 'token=; max-age=0';
     //ローカルストレージにtokenを格納する。
     localStorage.setItem("token",token);
     localStorage.setItem("name",name);
-    //ローカルストレージに格納されたユーザー名の表示
-    document.getElementById('logout1').innerText = localStorage.getItem("name");
+}
+//ローカルストレージに格納されたユーザー名の表示
+document.getElementById('logout1').innerText = localStorage.getItem("name");
 });
 
 //Sign Out処理
 document.getElementById('logout2').onclick = function() {
-    alert('logoutをクリックしました')
+    //localStorageの削除
     localStorage.removeItem("token");
     localStorage.removeItem("name");
-}
+    //cookieの初期化
+    document.cookie = 'token=; max-age=0';
 
+}
 document.getElementById('viewPosts').onclick = () => {
     //リクエストヘッダにtokenを格納
-    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"))
+    const tokenArray = localStorage.getItem("token").split('=');
+    xhr.open("GET", "/viewPosts");
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Authorization', 'Bearer ' + tokenArray[1])
+    xhr.send();
 }
 document.getElementById('viewCreate').onclick = () => {
     //リクエストヘッダにtokenを格納
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"))
-}
-
-document.getElementById('postsBtn').onclick = function(){
-    alert('postsBtnをクリックしました')
 }

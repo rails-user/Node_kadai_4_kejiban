@@ -2,17 +2,18 @@ express = require('express')
 const router = express.Router()
 const postsController = require('../controllers/postsController.js');
 const httpStatus = require('http-status-codes');
-//const cookie = require('cookie');
+const cookie = require('cookie');
 
 router.get('/viewPosts', (req, res) => {
-    if(req.headers.cookie){
+    if(req.headers.cookie || req.headers['Authorization']){
         postsController.viewPosts(req, res);
     }else{
         res.redirect('/users/viewLogin');
     }
-})
+})  
 router.get('/viewCreate', (req, res) => {
-    if(req.headers.cookie){
+    const token =cookie.parse(req.headers.cookie).token;
+    if(token){
         postsController.viewCreate(req, res);
     }else{
         res.redirect('/users/viewLogin');
