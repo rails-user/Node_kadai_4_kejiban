@@ -54,9 +54,10 @@ document.getElementById('viewPosts').onclick = () => {
     //リクエストヘッダにtokenを格納
     const tokenArray = localStorage.getItem("token").split('=');
     const token =  tokenArray[1]
-    xhr.open("GET", "/viewPosts");
-    xhr.withCredentials = true;
-    xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+    xhr.open("GET", "/viewPosts", false);
+    //xhr.withCredentials = true;
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader("Authorization", "Bearer" + token)
     xhr.send();
 }
 document.getElementById('viewCreate').onclick = () => {

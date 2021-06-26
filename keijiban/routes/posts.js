@@ -8,16 +8,21 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();
 
 router.get('/viewPosts', (req, res) => {
-    console.log('req.headers'+req.headers)
-    console.log('authorization'+req.headers['authorization']);
+    // console.log('xhr.HEADERS_RECEIVEDはこちら'+xhr.HEADERS_RECEIVED)
+    // console.log('xhr.getRequestHeaderはこちら'+xhr.getRequestHeader("Authorization"))
+    // console.log('res.headersはこちら'+JSON.stringify(res.headers))
+    // console.log('req.headersはこちら'+JSON.stringify(req.headers))
     if(req.headers.cookie || req.headers['authorization']){
         postsController.viewPosts(req, res);
     }else{
         res.redirect('/users/viewLogin');
     }
 })
+
 router.get('/viewCreate', (req, res) => {
     const token =cookie.parse(req.headers.cookie).token;
     if(token){
