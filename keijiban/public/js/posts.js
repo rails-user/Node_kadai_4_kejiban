@@ -1,5 +1,3 @@
-var xhr = new XMLHttpRequest();
-
 document.addEventListener("DOMContentLoaded", (response) => {
 //初回ロード時のみローカルストレージにtokenおよびユーザー名を格納する
 if(!localStorage.getItem("token")){
@@ -34,6 +32,8 @@ if(!localStorage.getItem("token")){
             break;
         }
     }
+    //cookieの初期化
+    document.cookie = 'token=; max-age=0';
     //ローカルストレージにtokenを格納する。
     localStorage.setItem("token",token);
     localStorage.setItem("name",name);
@@ -41,26 +41,33 @@ if(!localStorage.getItem("token")){
 //ローカルストレージに格納されたユーザー名の表示
 document.getElementById('logout1').innerText = localStorage.getItem("name");
 });
-
+// function viewPosts() {
+//     alert('a');
+//     const tokenArray = localStorage.getItem("token").split('=');
+//     const token =  tokenArray[1]
+//     fetch('http://localhost:3000/posts/viewPosts', {
+//         headers: { 'Authorization': 'Bearer: ' + token }
+//       }).then(response => response.text())
+//       .catch((error) => {
+//         console.log(error);
+//     });
+// }
+// function viewCreate() {
+//     const tokenArray = localStorage.getItem("token").split('=');
+//     const token =  tokenArray[1]
+//     fetch('http://localhost:3000/posts/viewCreate', {
+//         headers: { 'Authorization': 'Bearer: ' + token }
+//       }).then(response => 
+//         response.text())
+//       .catch((error) => {
+//         console.log(error);
+//     });
+// }
 //Sign Out処理
-document.getElementById('logout2').onclick = function() {
+document.getElementById('logout2').onclick = () => {
     //localStorageの削除
     localStorage.removeItem("token");
     localStorage.removeItem("name");
-    //cookieの初期化
+    // //cookieの初期化
     document.cookie = 'token=; max-age=0';
-}
-document.getElementById('viewPosts').onclick = () => {
-    //リクエストヘッダにtokenを格納
-    const tokenArray = localStorage.getItem("token").split('=');
-    const token =  tokenArray[1]
-    xhr.open("GET", "/viewPosts", false);
-    //xhr.withCredentials = true;
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader("Authorization", "Bearer" + token)
-    xhr.send();
-}
-document.getElementById('viewCreate').onclick = () => {
-    //リクエストヘッダにtokenを格納
-    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"))
 }

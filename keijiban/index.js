@@ -19,8 +19,6 @@ app.set('view engine','ejs');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-// app.use(express.cookieParser);
-
 //routeモジュールをアプリケーションに追加
 const usersRouter = require('./routes/users.js');
 app.use('/users', usersRouter);

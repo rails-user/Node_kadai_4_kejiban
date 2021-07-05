@@ -1,2 +1,31 @@
-<%- include('./top2') %>
-<%- include('./bottom2') %>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Node.js課題④</title>
+    <meta name="description" content="Node.js課題④">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script defer src="/js/posts.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div id="nav">
+                Node.js Lesson4
+                <a align="right" id="viewPosts" href="./viewPosts">みんなの投稿</a>
+                <a align="right" id="viewCreate" href="./viewCreate">投稿を作成</a>
+                <ul align="right">
+                    <li class="item"><a id="logout1" href=""></a>
+                        <ul class="child">
+                            <li><a id="logout2" href="/users/logout">logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+    ここは投稿作成画面です。
+    </div>
+</body>
+</html>

@@ -34,7 +34,7 @@ const usersController = {
         } else {
             const result = await users.create(req, res);
             if(result.token){
-                res.cookie('token', result.token, {maxAge: 3600,httpOnly: false});
+                res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
                 res.redirect('/posts/viewPosts');
             }else{
                 const errArray = [];
@@ -61,7 +61,7 @@ const usersController = {
         } else {
             const result = await users.select(req, res);
             if(result.token){
-                res.cookie('token', result.token, {maxAge: 3600,httpOnly: false});
+                res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
                 res.redirect('/posts/viewPosts');
             }else{
                 const errArray = [];
@@ -73,8 +73,15 @@ const usersController = {
                     });
             }
         }
+    },
+    logout: async (req, res) => {
+        res.clearCookie('token');
+        res.render('../views/login.ejs', {
+            email: '',
+            password: '',
+            errMessage: ''
+            });
     }
     }
-
 
 module.exports = usersController;

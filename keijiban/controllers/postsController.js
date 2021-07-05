@@ -1,20 +1,18 @@
 const httpStatus = require("http-status-codes");
-const users = require("../models/posts.js");
+const posts = require("../models/posts.js");
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie');
 
 const postsController = {
     viewPosts: (req, res) => {
-        res.render('../views/posts.ejs', {
-            });
+        res.render('../views/posts.ejs');
     },
     viewCreate: (req, res) => {
-        res.render('../views/postCreate.ejs', {
-            });
+        console.log('c');
+        res.render("../views/postCreate.ejs");
     },
     viewUpdate: (req, res) => {
-        res.render('../views/postUpdate.ejs', {
-            });
+        res.render('../views/postUpdate.ejs');
     },
     create: (req, res) => {
 

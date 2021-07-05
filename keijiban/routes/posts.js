@@ -3,57 +3,68 @@ const router = express.Router()
 const postsController = require('../controllers/postsController.js');
 const httpStatus = require('http-status-codes');
 const cookie = require('cookie');
+const SECRET_KEY = "secret";
+const jwt = require('jsonwebtoken');
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var xhr = new XMLHttpRequest();
-
-router.get('/viewPosts', (req, res) => {
-    // console.log('xhr.HEADERS_RECEIVEDはこちら'+xhr.HEADERS_RECEIVED)
-    // console.log('xhr.getRequestHeaderはこちら'+xhr.getRequestHeader("Authorization"))
-    // console.log('res.headersはこちら'+JSON.stringify(res.headers))
-    // console.log('req.headersはこちら'+JSON.stringify(req.headers))
-    if(req.headers.cookie || req.headers['authorization']){
+//認証処理
+const auth = (req, res, next) => {
+    //変数にcookieのtokenを格納
+    let token = '';
+    if (req.headers.cookie && 
+        req.headers.cookie.split('=')[0] === 'token'){
+        token = req.headers.cookie.split('=')[1];
+    }
+    else
+    {
+        return next();
+    }
+    //トークンの検証
+    jwt.verify(token, SECRET_KEY, function(err, decoded) {
+        if (err) {
+            next(err.message);
+        } else {
+            req.decoded = decoded;
+            next();
+        }
+    });
+}
+router.get('/viewPosts', auth, (req, res) => {
+    if(req.decoded){
         postsController.viewPosts(req, res);
     }else{
         res.redirect('/users/viewLogin');
     }
 })
-
-router.get('/viewCreate', (req, res) => {
-    const token =cookie.parse(req.headers.cookie).token;
-    if(token){
+router.get('/viewCreate', auth, (req, res) => {
+    if(req.decoded){
         postsController.viewCreate(req, res);
     }else{
         res.redirect('/users/viewLogin');
     }    
 })
-router.post('/create', (req, res) => {
-    if(req.headers.cookie){
+router.post('/create', auth, (req, res) => {
+    if(req.decoded){
         postsController.create(req, res);
     }else{
         res.redirect('/users/viewLogin');
-    }        
+    }
 })
-router.get('/viewUpdate', (req, res) => {
-    if(req.headers.cookie){
+router.get('/viewUpdate', auth, (req, res) => {
+    if(req.decoded){
         postsController.viewUpdate(req, res);
     }else{
         res.redirect('/users/viewLogin');
-    }        
+    }    
 })
-router.post('/update', (req, res) => {
-    if(req.headers.cookie){
+router.post('/update', auth, (req, res) => {
+    if(req.decoded){
         postsController.update(req, res);
     }else{
         res.redirect('/users/viewLogin');
-    }      
+    }    
 })
-router.get('/delete', (req, res) => {
-    if(req.headers.cookie){
+router.get('/delete',  auth, (req, res) => {
+    if(req.decoded){
         postsController.delete(req, res);
     }else{
         res.redirect('/users/viewLogin');
