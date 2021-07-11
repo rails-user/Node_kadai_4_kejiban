@@ -4,18 +4,29 @@ const jwt = require('jsonwebtoken')
 const cookie = require('cookie');
 
 const postsController = {
-    viewPosts: (req, res) => {
-        res.render('../views/posts.ejs');
+    viewPosts: async (req, res) => {
+        const result = await posts.selectAll();
+
+        res.render('../views/posts.ejs', {
+            //EJS側でresult.Posts[0].dataValues.titleで値が取れる
+            posts: result
+        });
     },
     viewCreate: (req, res) => {
-        console.log('c');
-        res.render("../views/postCreate.ejs");
+        res.render("../views/postCreate.ejs", {
+            title: "",
+            content: ""
+            })
     },
     viewUpdate: (req, res) => {
         res.render('../views/postUpdate.ejs');
     },
     create: (req, res) => {
-
+        console.log('posts.insertsにはいった');
+        posts.insert(req, res);
+        console.log('posts.insertsを出た');
+        console.log('/views/posts');
+        res.render('../views/posts.ejs');
     },
     update: (req, res) => {
 

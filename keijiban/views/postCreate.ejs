@@ -25,7 +25,11 @@
         </nav>
     </header>
     <div>
-    ここは投稿作成画面です。
+        <form action="/posts/create" method="post">
+            <p>タイトル<br><input type="text" name="title" size="40" height="20" value="<%= title %>"></p>
+            <p>コンテンツ<br><input type="text" name="content" size="40" height="100" value="<%= content %>"></p>
+            <p><input type="submit" id="create" value="新規投稿"></p>
+        </form>
     </div>
 </body>
 </html>

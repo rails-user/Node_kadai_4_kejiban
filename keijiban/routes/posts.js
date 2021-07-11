@@ -43,7 +43,9 @@ router.get('/viewCreate', auth, (req, res) => {
     }    
 })
 router.post('/create', auth, (req, res) => {
+    console.log('routerのcreateにはいった');
     if(req.decoded){
+    console.log('postsController.createにはいった');
         postsController.create(req, res);
     }else{
         res.redirect('/users/viewLogin');
