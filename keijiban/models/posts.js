@@ -12,6 +12,7 @@ const sequelize = new Sequelize({
   dialect: 'mysql'
 });
 
+// module.exports = (sequelize) => {
 const Post = sequelize.define('posts', {
   id: {
     allowNull: false,
@@ -41,10 +42,10 @@ const Post = sequelize.define('posts', {
 });
 Post.associate = function(User) {
   Post.belongsTo(User, {
-    foreignKey: 'id',
-    targetKey: 'userId'
+    foreignKey: 'userId',
+    targetKey: 'id'
   });
-};
+}
 
 module.exports = {
   //投稿を全件取得
@@ -52,13 +53,15 @@ module.exports = {
     try{
       const Posts = await Post.findAll(
         {
+        raw: true,
         include: [{
-            model: users,
+            model: users.User,
             required: false
         }]
-      }
+       }
       );
-      return Posts;
+      console.log(Posts);
+      // return Posts;
     }
     catch (error) {
       console.log(error);

@@ -45,7 +45,7 @@ User.associate = function(Post) {
     foreignKey: 'userId',
     sourceKey: 'id'
   });
-};
+}
 
 module.exports = {
   //ログイン（ユーザー取得）
