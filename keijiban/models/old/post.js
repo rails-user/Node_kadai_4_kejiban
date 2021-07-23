@@ -1,7 +1,7 @@
 express = require('express');
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-const users = require("./users.js");
+const users = require("./user.js");
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
@@ -13,7 +13,7 @@ const sequelize = new Sequelize({
 });
 
 // module.exports = (sequelize) => {
-const Post = sequelize.define('posts', {
+const Post = sequelize.define('Posts', {
   id: {
     allowNull: false,
     type: Sequelize.INTEGER,
@@ -31,7 +31,7 @@ const Post = sequelize.define('posts', {
   userId: {
     allowNull: false,
     references: {
-        model: 'users',
+        model: 'User',
         key: 'id'
       },
     type: Sequelize.INTEGER
@@ -52,11 +52,17 @@ module.exports = {
   //投稿を全件取得
   selectAll: async (req, res) => {
     try{
-      const Posts = await sequelize.query(
-        'select * from posts as a left join users as b on a.userId = b.id;'
+      const Posts = await Post.findAll(
+        {
+        raw: true,
+        include: [{
+            model: User,
+            required: false
+        }]
+       }
       );
-      console.log(Posts);
-      // return Posts;
+      //console.log(Posts);
+      return Posts;
     }
     catch (error) {
       console.log(error);
@@ -94,7 +100,7 @@ module.exports = {
   delete: async (req, res) => {
     let result = new Object();
     try{
-        await Post.destroy({where:{ 
+        const Post = await Post.destroy({where:{ 
             id : req.body.id
           }});
     }

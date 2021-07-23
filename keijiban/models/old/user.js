@@ -5,8 +5,7 @@ app.use(express.urlencoded({ extended: true }));
 const bcryptjs = require('bcryptjs');
 const saltRounds = 10
 const jwt = require('jsonwebtoken')
-
-const posts = require("./posts.js");
+//const posts = require("./post.js");
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
@@ -17,7 +16,7 @@ const sequelize = new Sequelize({
   dialect: 'mysql'
 });
 
-const User = sequelize.define('users', {
+const User = sequelize.define('Users', {
   id: {
     allowNull: false,
     type: Sequelize.INTEGER,

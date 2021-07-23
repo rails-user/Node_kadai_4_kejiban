@@ -1,4 +1,4 @@
-const users = require("../models/users.js");
+const User = require("../models/users.js");
 const httpStatus = require("http-status-codes");
 const jwt = require('jsonwebtoken')
 
@@ -32,7 +32,7 @@ const usersController = {
             })
         //バリデーションでエラーではない場合
         } else {
-            const result = await users.create(req, res);
+            const result = await User.create(req, res);
             if(result.token){
                 res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
                 res.redirect('/posts/viewPosts');
@@ -59,7 +59,7 @@ const usersController = {
                 errMessage: errArray
             })
         } else {
-            const result = await users.select(req, res);
+            const result = await User.select(req, res);
             if(result.token){
                 res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
                 res.redirect('/posts/viewPosts');
