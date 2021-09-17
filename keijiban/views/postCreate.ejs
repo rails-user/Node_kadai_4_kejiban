@@ -30,6 +30,15 @@
             <p>コンテンツ<br><input type="text" name="content" size="40" height="100" value="<%= content %>"></p>
             <p><input type="submit" id="create" value="新規投稿"></p>
         </form>
+        <% if(errMessage) { %>
+            <ul>
+                <% for (let i in errMessage) { %>
+                    <li>
+                        <%= errMessage[i].msg %>
+                    </li>
+                    <% } %>
+            </ul>
+        <% } %>
     </div>
 </body>
 </html>

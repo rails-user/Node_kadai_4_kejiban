@@ -30,13 +30,17 @@
                 <table>
                 <% posts.forEach(function(value, key) { %>
                         <tr>
-                            <!-- 参照したサイトhttps://qiita.com/mazeltov7/items/306cf93af50c0810c9b4 -->
                             投稿ID：<%= value.id %><br>
                             タイトル：<%= value.title %><br>
                             コンテンツ：<%= value.content %><br>
                             投稿者ID：<%= value.userId %><br>
                             投稿者：<%= value.name %><br>
                             <a>ここにいいねが出力される予定</a><br>
+                            <% if (value.userId == login_user_id) { %>
+                            <a href="/posts/viewUpdate/<%= value.id %>">編集</a><br>
+                            <a href="/posts/delete/<%= value.id %>">削除</a><br> 
+                            <% } %>
+                            <br>
                         </tr>
                 <% }); %>
                 </table>

@@ -1,6 +1,6 @@
 //expressモジュールをアプリケーションに追加
 express = require('express');
-// //インスタンスの生成
+//インスタンスの生成
 app = express();
 
 //静的ファイル(JSファイル)の読み込み

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Node.js課題④</title>
+    <meta name="description" content="Node.js課題④">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script defer src="/js/posts.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div id="nav">
+                Node.js Lesson4
+                <a align="right" id="viewPosts" href="./viewPosts">みんなの投稿</a>
+                <a align="right" id="viewCreate" href="./viewCreate">投稿を作成</a>
+                <ul align="right">
+                    <li class="item"><a id="logout1" href=""></a>
+                        <ul class="child">
+                            <li><a id="logout2" href="/users/logout">logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+                <form action="/posts/update/<%= id %>" method="post">
+                    <p>タイトル<br><input type="text" name="title" size="40" height="20" value="<%= title %>"></p>
+                    <p>コンテンツ<br><input type="text" name="content" size="40" height="100" value="<%= content %>"></p>
+                    <p><input type="submit" id="update" value="更新"></p>
+                </form>
+    </div>
+    <% if(errMessage) { %>
+        <ul>
+            <% for (let i in errMessage) { %>
+                <li>
+                    <%= errMessage[i].msg %>
+                </li>
+                <% } %>
+        </ul>
+    <% } %>
+</body>
+</html>

@@ -12,7 +12,6 @@ const sequelize = new Sequelize({
   dialect: 'mysql'
 });
 
-// module.exports = (sequelize) => {
 const Post = sequelize.define('posts', {
   id: {
     allowNull: false,
@@ -49,14 +48,29 @@ Post.associate = function(User) {
 }
 
 module.exports = {
+  //投稿を一件取得
+  select: async (req, res) => {
+    try{
+      const Post = await sequelize.query(
+        `select id, title, content from posts where id = :board_id`,
+        {
+          replacements: { board_id: req.params.id },
+          type: sequelize.QueryTypes.SELECT
+        }
+      );
+      return Post;
+    }
+    catch (error) {
+      console.log(error);
+    }
+  },
   //投稿を全件取得
   selectAll: async (req, res) => {
     try{
       const Posts = await sequelize.query(
-        'select * from posts as a left join users as b on a.userId = b.id;'
+        'select a.id, a.title, a.content, a.userId, a.createdAt, a.updatedAt, b.name, b.email, b.password from posts as a left join users as b on a.userId = b.id;'
       );
-      console.log(Posts);
-      // return Posts;
+      return Posts;
     }
     catch (error) {
       console.log(error);
@@ -78,24 +92,21 @@ module.exports = {
   },
   //投稿を更新
   update: async (req, res) => {
-    let result = new Object();
     try{
-        const Posts = await Post.update({where:{
-            title : req.body.title,
-            content : req.body.content,
-            updatedAt : req.body.updatedAt
-        }});
+        const Posts = await Post.update(
+        { title: req.body.title, content: req.body.content, updatedAt : req.body.updatedAt },
+        { where: { id: req.params.id } }
+        );
     }
     catch (error) {
       console.log(error);
     }
   },
   //投稿を削除
-  delete: async (req, res) => {
-    let result = new Object();
+    delete: async (req, res) => {
     try{
         await Post.destroy({where:{ 
-            id : req.body.id
+            id : req.params.id
           }});
     }
     catch (error) {

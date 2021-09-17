@@ -42,7 +42,6 @@ const User = sequelize.define('users', {
 });
 User.associate = function(Post) {
   User.hasMany(Post
-  //console.log(User.getPost());
     , {
     foreignKey: 'userId',
     sourceKey: 'id'
