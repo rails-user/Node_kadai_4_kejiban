@@ -30,49 +30,31 @@ const auth = (req, res, next) => {
         }
     });
 }
+
 router.get('/viewPosts', auth, (req, res) => {
-    if(req.decoded){
-        postsController.viewPosts(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }
+    postsController.viewPosts(req, res);
 })
+
 router.get('/viewCreate', auth, (req, res) => {
-    if(req.decoded){
         postsController.viewCreate(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
 })
+
 router.post('/create', validator3, auth, (req, res) => {
-    if(req.decoded){
         const errors = validationResult(req);
         postsController.create(req, res, errors);
-    }else{
-        res.redirect('/users/viewLogin');
-    }
 })
+
 router.get('/viewUpdate/:id', auth, (req, res) => {
-    if(req.decoded){
-        postsController.viewUpdate(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
+        postsController.viewUpdate(req, res); 
 })
+
 router.post('/update/:id', validator3, auth, (req, res) => {
-    if(req.decoded){
         const errors = validationResult(req);
         postsController.update(req, res, errors);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
 })
+
 router.get('/delete/:id',  auth, (req, res) => {
-    if(req.decoded){
-        postsController.delete(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }      
+        postsController.delete(req, res);     
 })
 
 module.exports = router
