@@ -27,8 +27,9 @@ const postsController = {
             res.redirect('/users/viewLogin');
         }  
     },
-    create: async (req, res, errors) => {
+    create: async (req, res, validationResult) => {
         if(req.decoded){
+            const errors = validationResult(req);
             const errArray = errors.array();
             //バリデーションでエラーになった場合
             if(!errors.isEmpty()) {
@@ -59,8 +60,9 @@ const postsController = {
             res.redirect('/users/viewLogin');
         }    
     },
-    update: async (req, res, errors) => {
+    update: async (req, res, validationResult) => {
         if(req.decoded){
+            const errors = validationResult(req);
             const errArray = errors.array();
             //バリデーションでエラーになった場合
             if(!errors.isEmpty()) {

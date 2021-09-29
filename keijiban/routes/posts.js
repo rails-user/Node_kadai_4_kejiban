@@ -40,8 +40,7 @@ router.get('/viewCreate', auth, (req, res) => {
 })
 
 router.post('/create', validator3, auth, (req, res) => {
-        const errors = validationResult(req);
-        postsController.create(req, res, errors);
+        postsController.create(req, res, validationResult);
 })
 
 router.get('/viewUpdate/:id', auth, (req, res) => {
@@ -49,8 +48,7 @@ router.get('/viewUpdate/:id', auth, (req, res) => {
 })
 
 router.post('/update/:id', validator3, auth, (req, res) => {
-        const errors = validationResult(req);
-        postsController.update(req, res, errors);
+        postsController.update(req, res, validationResult);
 })
 
 router.get('/delete/:id',  auth, (req, res) => {
