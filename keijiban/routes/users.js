@@ -32,34 +32,16 @@ const auth = (req, res, next) => {
     }
 
 router.get('/viewRegister', auth, (req, res) => {
-        if(!req.decoded){
                 usersController.viewRegister(req, res);
-        }else{
-                res.redirect('/posts/viewPosts');
-        }
 })
 router.post('/register', validator, auth, (req, res) => {
-        if(!req.decoded){
-                const errors = validationResult(req);
-                usersController.register(req, res, errors);
-        }else{
-                res.redirect('/posts/viewPosts');
-        }
+                usersController.register(req, res, validationResult);
 })
 router.get('/viewLogin', auth, (req, res) => {
-        if(!req.decoded){
                 usersController.viewLogin(req, res);
-        }else{
-                res.redirect('/posts/viewPosts');
-        }
 })
 router.post('/login', validator2, auth,(req, res) => {
-        if(!req.decoded){
-                const errors = validationResult(req);
-                usersController.login(req, res, errors);
-        }else{
-                res.redirect('/posts/viewPosts');
-        }
+                usersController.login(req, res, validationResult);
 })
 router.get('/logout', (req, res) => {
         usersController.logout(req, res);
