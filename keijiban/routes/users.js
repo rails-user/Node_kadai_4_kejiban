@@ -2,7 +2,6 @@ express = require('express')
 const router = express.Router()
 const usersController = require('../controllers/usersController.js');
 const httpStatus = require('http-status-codes');
-const { validationResult } = require('express-validator');
 const validator = require('../validator/validator.js');
 const validator2 = require('../validator/validator2.js');
 const SECRET_KEY = "secret";
@@ -31,20 +30,14 @@ const auth = (req, res, next) => {
         });
     }
 
-router.get('/viewRegister', auth, (req, res) => {
-                usersController.viewRegister(req, res);
-})
-router.post('/register', validator, auth, (req, res) => {
-                usersController.register(req, res, validationResult);
-})
-router.get('/viewLogin', auth, (req, res) => {
-                usersController.viewLogin(req, res);
-})
-router.post('/login', validator2, auth,(req, res) => {
-                usersController.login(req, res, validationResult);
-})
-router.get('/logout', (req, res) => {
-        usersController.logout(req, res);
-})
+router.get('/viewRegister', auth, usersController.viewRegister)
+
+router.post('/register', auth, validator, usersController.validator, usersController.register)
+
+router.get('/viewLogin', auth, usersController.viewLogin)
+
+router.post('/login', auth, validator2, usersController.validator, usersController.login)
+
+router.get('/logout', usersController.logout)
 
 module.exports = router

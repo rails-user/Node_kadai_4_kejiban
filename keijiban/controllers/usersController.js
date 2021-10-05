@@ -1,6 +1,7 @@
 const User = require("../models/users.js");
 const httpStatus = require("http-status-codes");
 const jwt = require('jsonwebtoken')
+const { validationResult } = require('express-validator');
 
 const usersController = {
     viewRegister: (req, res) => {
@@ -27,21 +28,7 @@ const usersController = {
             res.redirect('/posts/viewPosts');
         }
     },
-    register: async (req, res, validationResult) => {
-        if(!req.decoded){
-            const errors = validationResult(req);
-            const errArray = errors.array();
-            //バリデーションでエラーになった場合
-            if(!errors.isEmpty()) {
-                res.render("../views/register.ejs", {
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password,
-                password_confirm: req.body.password_confirm,
-                errMessage: errArray
-                })
-            //バリデーションでエラーではない場合
-            } else {
+    register: async (req, res) => {
                 const result = await User.create(req, res);
                 if(result.token){
                     res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
@@ -57,23 +44,8 @@ const usersController = {
                         errMessage: errArray
                         });
                 }
-            }
-        }else{
-            res.redirect('/posts/viewPosts');
-        }
     },
-    login: async (req, res, validationResult) => {
-        if(!req.decoded){
-            const errors = validationResult(req);
-            const errArray = errors.array();
-            //バリデーションでエラーになった場合
-            if(!errors.isEmpty()) {
-                res.render("../views/login.ejs", {
-                    email: req.body.email,
-                    password: req.body.password,
-                    errMessage: errArray
-                })
-            } else {
+    login: async (req, res) => {
                 const result = await User.select(req, res);
                 if(result.token){
                     res.cookie('token', result.token, {httpOnly: false, maxAge: 600000});
@@ -87,10 +59,6 @@ const usersController = {
                         errMessage: errArray
                         });
                 }
-            }
-        }else{
-                res.redirect('/posts/viewPosts');
-        }
     },
     logout: async (req, res) => {
         res.clearCookie('token');
@@ -99,6 +67,34 @@ const usersController = {
             password: '',
             errMessage: ''
             });
+    },
+    validator: async (req, res, next) => {
+        if(!req.decoded){
+            const errors = validationResult(req);
+            const errArray = errors.array();
+            //バリデーションでエラーになった場合
+            if(!errors.isEmpty()) {
+                if (req.path.split('/')[1] === "register") {
+                    res.render("../views/register.ejs", {
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: req.body.password,
+                        password_confirm: req.body.password_confirm,
+                        errMessage: errArray
+                })}
+                else if (req.path.split('/')[1] === "login") {
+                    res.render("../views/login.ejs", {
+                        email: req.body.email,
+                        password: req.body.password,
+                        errMessage: errArray
+                })}
+            //バリデーションでエラーではない場合
+            } else {
+                next()
+            }
+        }else{
+            res.redirect('/posts/viewPosts');
+        }
     }
 }
 

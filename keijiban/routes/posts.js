@@ -5,7 +5,6 @@ const httpStatus = require('http-status-codes');
 const cookie = require('cookie');
 const SECRET_KEY = "secret";
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
 const validator3 = require('../validator/validator3.js');
 
 //認証処理
@@ -31,28 +30,16 @@ const auth = (req, res, next) => {
     });
 }
 
-router.get('/viewPosts', auth, (req, res) => {
-    postsController.viewPosts(req, res);
-})
+router.get('/viewPosts', auth, postsController.viewPosts)
 
-router.get('/viewCreate', auth, (req, res) => {
-        postsController.viewCreate(req, res);
-})
+router.get('/viewCreate', auth, postsController.viewCreate)
 
-router.post('/create', validator3, auth, (req, res) => {
-        postsController.create(req, res, validationResult);
-})
+router.post('/create', auth, validator3, postsController.validator, postsController.create)
 
-router.get('/viewUpdate/:id', auth, (req, res) => {
-        postsController.viewUpdate(req, res); 
-})
+router.get('/viewUpdate/:id', auth, postsController.viewUpdate)
 
-router.post('/update/:id', validator3, auth, (req, res) => {
-        postsController.update(req, res, validationResult);
-})
+router.post('/update/:id', auth, validator3, postsController.validator, postsController.update)
 
-router.get('/delete/:id',  auth, (req, res) => {
-        postsController.delete(req, res);     
-})
+router.get('/delete/:id',  auth, postsController.delete)
 
 module.exports = router

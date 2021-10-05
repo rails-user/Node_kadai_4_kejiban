@@ -2,6 +2,8 @@ const httpStatus = require("http-status-codes");
 const Post = require("../models/posts.js");
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie');
+const { validationResult } = require('express-validator');
+//const { noExtendLeft } = require("sequelize/types/lib/operators");
 
 const postsController = {
     viewPosts: async (req, res)=> {
@@ -27,25 +29,9 @@ const postsController = {
             res.redirect('/users/viewLogin');
         }  
     },
-    create: async (req, res, validationResult) => {
-        if(req.decoded){
-            const errors = validationResult(req);
-            const errArray = errors.array();
-            //バリデーションでエラーになった場合
-            if(!errors.isEmpty()) {
-                res.render("../views/postCreate.ejs", {
-                title: req.body.title,
-                content: req.body.content,
-                errMessage: errArray
-            })
-            //バリデーションでエラーではない場合
-            } else {
-                await Post.insert(req, res);
-                res.redirect('/posts/viewPosts');
-            }
-        }else{
-            res.redirect('/users/viewLogin');
-        }
+    create: async (req, res) => {
+            await Post.insert(req, res);
+            res.redirect('/posts/viewPosts');
     },
     viewUpdate: async (req, res) => {
         if(req.decoded){
@@ -60,26 +46,9 @@ const postsController = {
             res.redirect('/users/viewLogin');
         }    
     },
-    update: async (req, res, validationResult) => {
-        if(req.decoded){
-            const errors = validationResult(req);
-            const errArray = errors.array();
-            //バリデーションでエラーになった場合
-            if(!errors.isEmpty()) {
-                res.render("../views/postUpdate.ejs", {
-                id: req.params.id,  
-                title: req.body.title,
-                content: req.body.content,
-                errMessage: errArray
-            })
-            //バリデーションでエラーではない場合
-            } else {
+    update: async (req, res) => {
                 await Post.update(req, res);
                 res.redirect('/posts/viewPosts');
-            }
-        }else{
-            res.redirect('/users/viewLogin');
-        }
     },
     delete: async (req, res) => {
         if(req.decoded){
@@ -88,6 +57,33 @@ const postsController = {
         }else{
             res.redirect('/users/viewLogin');
         }    
+    },
+    validator: async (req, res, next) => {
+        if(req.decoded){
+            const errors = validationResult(req);
+            const errArray = errors.array();
+            //バリデーションでエラーになった場合
+            if(!errors.isEmpty()) {
+                if (req.path.split('/')[1] === "create") {
+                    res.render("../views/postCreate.ejs", {
+                    title: req.body.title,
+                    content: req.body.content,
+                    errMessage: errArray
+                })}
+                else if (req.path.split('/')[1] === "update") {
+                    res.render("../views/postUpdate.ejs", {
+                    id: req.params.id,  
+                    title: req.body.title,
+                    content: req.body.content,
+                    errMessage: errArray
+                })}
+            //バリデーションでエラーではない場合
+            } else {
+                next()
+            }
+        }else{
+            res.redirect('/users/viewLogin');
+        }
     }
 }
 
