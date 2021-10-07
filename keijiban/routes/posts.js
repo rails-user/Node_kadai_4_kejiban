@@ -5,6 +5,7 @@ const httpStatus = require('http-status-codes');
 const cookie = require('cookie');
 const SECRET_KEY = "secret";
 const jwt = require('jsonwebtoken');
+const validator3 = require('../validator/validator3.js');
 
 //認証処理
 const auth = (req, res, next) => {
@@ -28,47 +29,17 @@ const auth = (req, res, next) => {
         }
     });
 }
-router.get('/viewPosts', auth, (req, res) => {
-    if(req.decoded){
-        postsController.viewPosts(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }
-})
-router.get('/viewCreate', auth, (req, res) => {
-    if(req.decoded){
-        postsController.viewCreate(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
-})
-router.post('/create', auth, (req, res) => {
-    if(req.decoded){
-        postsController.create(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }
-})
-router.get('/viewUpdate', auth, (req, res) => {
-    if(req.decoded){
-        postsController.viewUpdate(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
-})
-router.post('/update', auth, (req, res) => {
-    if(req.decoded){
-        postsController.update(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }    
-})
-router.get('/delete',  auth, (req, res) => {
-    if(req.decoded){
-        postsController.delete(req, res);
-    }else{
-        res.redirect('/users/viewLogin');
-    }      
-})
+
+router.get('/viewPosts', auth, postsController.viewPosts)
+
+router.get('/viewCreate', auth, postsController.viewCreate)
+
+router.post('/create', auth, validator3, postsController.validator, postsController.create)
+
+router.get('/viewUpdate/:id', auth, postsController.viewUpdate)
+
+router.post('/update/:id', auth, validator3, postsController.validator, postsController.update)
+
+router.get('/delete/:id',  auth, postsController.delete)
 
 module.exports = router

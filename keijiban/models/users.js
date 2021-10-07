@@ -6,6 +6,8 @@ const bcryptjs = require('bcryptjs');
 const saltRounds = 10
 const jwt = require('jsonwebtoken')
 
+const posts = require("./posts.js");
+
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
   host: 'mysql',
@@ -38,6 +40,13 @@ const User = sequelize.define('users', {
   timestamps: true,
   freezeTableName: true
 });
+User.associate = function(Post) {
+  User.hasMany(Post
+    , {
+    foreignKey: 'userId',
+    sourceKey: 'id'
+  });
+}
 
 module.exports = {
   //ログイン（ユーザー取得）

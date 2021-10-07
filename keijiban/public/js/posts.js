@@ -41,28 +41,6 @@ if(!localStorage.getItem("token")){
 //ローカルストレージに格納されたユーザー名の表示
 document.getElementById('logout1').innerText = localStorage.getItem("name");
 });
-// function viewPosts() {
-//     alert('a');
-//     const tokenArray = localStorage.getItem("token").split('=');
-//     const token =  tokenArray[1]
-//     fetch('http://localhost:3000/posts/viewPosts', {
-//         headers: { 'Authorization': 'Bearer: ' + token }
-//       }).then(response => response.text())
-//       .catch((error) => {
-//         console.log(error);
-//     });
-// }
-// function viewCreate() {
-//     const tokenArray = localStorage.getItem("token").split('=');
-//     const token =  tokenArray[1]
-//     fetch('http://localhost:3000/posts/viewCreate', {
-//         headers: { 'Authorization': 'Bearer: ' + token }
-//       }).then(response => 
-//         response.text())
-//       .catch((error) => {
-//         console.log(error);
-//     });
-// }
 //Sign Out処理
 document.getElementById('logout2').onclick = () => {
     //localStorageの削除
