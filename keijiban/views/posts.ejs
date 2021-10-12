@@ -35,8 +35,12 @@
                             コンテンツ：<%= value.content %><br>
                             投稿者ID：<%= value.userId %><br>
                             投稿者：<%= value.name %><br>
-                            <a>ここにいいねが出力される予定</a><br>
-                            <% if (value.userId == login_user_id) { %>
+                            <% if (value.flgLike === null) { %>
+                            <a href="/likes/insert/<%= value.id %>">いいね追加</a><%= value.likesCount %><br>
+                            <% }else{ %>
+                            <a href="/likes/delete/<%= value.id %>">いいね削除</a><%= value.likesCount %><br>
+                            <% } %>
+                            <% if (value.userId === Number(login_user_id)) { %>
                             <a href="/posts/viewUpdate/<%= value.id %>">編集</a><br>
                             <a href="/posts/delete/<%= value.id %>">削除</a><br> 
                             <% } %>

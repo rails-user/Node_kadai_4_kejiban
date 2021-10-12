@@ -9,7 +9,7 @@ const postsController = {
     viewPosts: async (req, res)=> {
         if(req.decoded){
             const decodedToken = jwt.decode(req.cookies.token, {complete: true})
-            const result = await Post.selectAll();
+            const result = await Post.selectAll(req, res);
             res.render('../views/posts.ejs', {
                 posts: result[0],
                 login_user_id: JSON.stringify(decodedToken.payload.id)

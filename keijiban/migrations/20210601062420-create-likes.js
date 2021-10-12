@@ -14,7 +14,9 @@ module.exports = {
           model: 'posts',
           key: 'id'
         },
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       userId: {
         allowNull: false,

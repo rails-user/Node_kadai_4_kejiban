@@ -67,13 +67,24 @@ module.exports = {
   //投稿を全件取得
   selectAll: async (req, res) => {
     try{
-      const Posts = await sequelize.query(
-        'select a.id, a.title, a.content, a.userId, a.createdAt, a.updatedAt, b.name, b.email, b.password from posts as a left join users as b on a.userId = b.id;'
-      );
-      return Posts;
+        //f.userId as flgLikeがNULLだとユーザーはいいねしていない。f.likesCountはいいねの件数。
+              let strSQL = 'select e.id, e.title, e.content, e.userId, e.name, e.email, '
+         strSQL = strSQL + 'e.password ,e.createdAt, e.updatedAt, f.likesCount, f.userId as flgLike '
+         strSQL = strSQL + 'from '
+         strSQL = strSQL + '(select a.id, a.title, a.content, a.userId, a.createdAt, a.updatedAt, b.name, b.email, b.password '
+         strSQL = strSQL + 'from posts as a left join users as b on a.userId = b.id) as e '
+         strSQL = strSQL + 'left join '
+         strSQL = strSQL + '(select c.postId, c.likesCount, d.userId from'
+         strSQL = strSQL + '(select  postId, count(*) as likesCount from likes group by postId) as c '
+         strSQL = strSQL + 'left join '
+         strSQL = strSQL + '(select postId, userId from likes where userId = ' + getUserId(req) + ') as d '
+         strSQL = strSQL + 'on c.postId = d.postId) as f '
+         strSQL = strSQL + 'on e.id = f.postId'
+        const Posts = await sequelize.query(strSQL);
+        return Posts;
     }
     catch (error) {
-      console.log(error);
+        console.log(error);
     }
   },
   //投稿を一件作成
