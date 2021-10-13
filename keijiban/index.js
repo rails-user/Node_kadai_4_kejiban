@@ -27,6 +27,10 @@ app.use('/users', usersRouter);
 const postsRouter = require('./routes/posts.js');
 app.use('/posts', postsRouter);
 
+//routeモジュールをアプリケーションに追加
+const likesRouter = require('./routes/likes.js');
+app.use('/likes', likesRouter);
+
 //クライアントから送られてきたデータをオブジェクトで扱えるように変換。
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
