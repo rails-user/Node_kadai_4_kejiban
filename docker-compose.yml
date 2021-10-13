@@ -2,6 +2,9 @@ version: '3.8'
 services:
  mysql:
   image: mysql
+  #mbind: Operation not permittedの回避の為に追加
+  cap_add:
+    - SYS_NICE
   environment:
     MYSQL_ROOT_PASSWORD: password
     MYSQL_DATABASE: mysql_db
