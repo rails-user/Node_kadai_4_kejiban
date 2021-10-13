@@ -1,5 +1,5 @@
-express = require('express')
-const router = express.Router()
+express = require('express');
+const router = express.Router();
 const likesController = require('../controllers/likesController.js');
 const httpStatus = require('http-status-codes');
 const cookie = require('cookie');
@@ -29,8 +29,8 @@ const auth = (req, res, next) => {
     });
 }
 
-router.get('/insert/:id', auth, likesController.insert)
+router.get('/insert/:id', auth, likesController.insert);
 
-router.get('/delete/:id', auth, likesController.delete)
+router.get('/delete/:id', auth, likesController.delete);
 
-module.exports = router
+module.exports = router;
